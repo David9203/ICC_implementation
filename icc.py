@@ -1,13 +1,31 @@
+# Authors: Nestor David Rendon <nestor.rendon@udea.edu.co>
+
+
+"""The implementation is based on Algorithm of "A Validity Measure for Hard and Fuzzy Clustering derived from Fisher’ s Linear Discriminant Claudia Rita de Franco et al. 
+
+
+
+Atributes:
+x= numpy array, each samples unity in rows and the variables in columns. 
+u= Hard or soft Fuzzy membership matrix
+
+Parameters: 
+n= number of experimental samples
+c=Cluster numbers
+cluster_centroids: matrix of centroids
+
+"""
 from sklearn.metrics.pairwise import euclidean_distances
 from numpy import linalg as LA
 import math  
 
 class ICC():
+
+
   i=0
   def __init__(self):
         self.x =None
         self.u =None
-        self.ii=None
         self.n=None
         self.c=None
         self.clusterscentroids=[]
@@ -40,6 +58,7 @@ class ICC():
         return np.sum(self.x*self.u[:,self.i][:, np.newaxis],axis=0)/np.sum(self.u[:,i])
 
   def clusters_centroidsfn(self):
+    #computes the partition centroid for each cluster
         for i in range(self.u.shape[1]):
               self.clusterscentroids.append(self.mei(i))
         self.clusters_centroids=np.asarray(self.clusterscentroids) 
@@ -52,6 +71,7 @@ class ICC():
         return min(np.asarray(self.diffarray))
   
   def Sbe(self):
+    #It estimates the quality of the placement of the centers on their clusters
         for i in range(self.clusters_centroids.shape[0]):
               self.summarraySbe.append(sum(u[:,i]*LA.norm(self.clusterscentroids[i]-m(x), 2)))
         return sum(self.summarraySbe)
